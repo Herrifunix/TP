@@ -8,28 +8,29 @@ $user = new User();
 
 if (isset($_SESSION['nom'])) {
     $userName = $_SESSION['nom'];
-    $userId = $user->getUserIdByName($userName); 
+    $userId = $_SESSION['userId']; 
 } else {
     header('Location: login.php');
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    if (isset($_POST['titre'], $_POST['auteur'], $_POST['action']) && $_POST['action'] === 'ajoutLivre') {
-        $titre = $_POST['titre'];
-        $auteur = $_POST['auteur'];
 
-        if (empty($titre) || empty($auteur)) {
-            echo "Le titre et l'auteur sont obligatoires.";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $titre = $_POST['titre'] ?? null;
+    $auteur = $_POST['auteur'] ?? null;
+
+        
+
+    if (!empty($titre) && !empty($auteur) && $_POST['action'] == 'ajouter') {
+        if ($livre->ajoutLivre($titre, $auteur, $userId)) {
+            $message = "✅ Livre ajouté avec succès !";
         } else {
-            $result = $livre->ajoutLivre($titre, $auteur, $userId);
-            if ($result) {
-                echo "Livre ajouté avec succès!";
-            } else {
-                echo "Erreur lors de l'ajout du livre.";
-            }
+            $message = "❌ Erreur lors de l'ajout du livre.";
         }
+    } else {
+        $message = "❌ Veuillez remplir tous les champs.";
     }
 
     
@@ -79,7 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Bienvenue <?php echo htmlspecialchars($_SESSION['nom']); ?></h1>
     <a href="index.php">Accueil</a>
-    <p><a href="logout.php">Déconnexion</a></p>
+    <a href="gestion.php">Gestion des livres</a>
+    <a href="logout.php">Déconnexion</a>
 
     <h2>Mes Favoris</h2>
     <h3>Vous avez 
@@ -94,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $livres = $livre->getAllLivres();  
     foreach ($livres as $l) {
         
-        $Favlivres = $livre->selectFromFavorites($l['id'], $userId);
-        foreach ($Favlivres as $fav) {
+        $favlivres = $livre->selectFromFavorites($l['id'], $userId);
+        foreach ($favlivres as $fav) {
             echo "Title: " . htmlspecialchars($fav['titre']) . ", Auteur: " . htmlspecialchars($fav['auteur']) . "<br>";
             echo "<form action='dashboard.php' method='POST'>
                 <input type='hidden' name='livreId' value='" . $l['id'] . "'>
@@ -135,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="dashboard.php" method="POST">
         <input type="text" name="titre" placeholder="Titre du livre" required>
         <input type="text" name="auteur" placeholder="Auteur" required>
-        <button type="submit" name="action" value="ajoutLivre">Ajouter le livre</button>
+        <button type="submit" name="action" value="ajouter">Ajouter le livre</button>
     </form>
 </body>
 </html>

@@ -8,7 +8,9 @@ USE bibliotheque;
 CREATE TABLE livres (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
-    auteur VARCHAR(255) NOT NULL
+    auteur VARCHAR(255) NOT NULL,
+    utilisateur_id INT NOT NULL,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
 
 -- Table des utilisateurs

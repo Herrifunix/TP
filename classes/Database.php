@@ -4,7 +4,7 @@ class Database
     private $host = "localhost";
     private $db = "bibliotheque";
     private $user = "root";
-    private $pass = "Pipopipo1";
+    private $pass = "";
     private $charset = "utf8mb4";
     public $pdo;
 

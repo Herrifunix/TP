@@ -3,7 +3,7 @@
 $host = 'localhost';
 $db = "bibliotheque";
 $user = "root";
-$pass = "Pipopipo1";
+$pass = "";
 $charset = "utf8mb4"; 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [

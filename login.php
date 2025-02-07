@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $loggedInUser = $user->login($nom, $password);
         if ($loggedInUser) {
             $_SESSION['nom'] = $loggedInUser['nom'];
+            $_SESSION['userId'] = $user->getUserIdByName($nom);
             header("Location: dashboard.php");
             exit();
         } else {

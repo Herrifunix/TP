@@ -115,7 +115,7 @@ class Livre
 
         $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
         $stmt->bindParam(':auteur', $auteur, PDO::PARAM_STR);
-        $stmt->bindParam(':utilisateur_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':utilisateur_id', $userId, PDO::PARAM_STR);
 
 
         if ($stmt->execute()) {

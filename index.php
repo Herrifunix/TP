@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php if (isset($_SESSION['nom'])) { ?>
         <a href="dashboard.php">Dashboard</a>
+        <a href="gestion.php">Gestion des livres</a>
         <a href="logout.php">Déconnexion</a>
     <?php } else { ?>
         <a href="register.php">Inscription</a>
