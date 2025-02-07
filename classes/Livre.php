@@ -73,5 +73,18 @@ class Livre
         return $stmt->fetchColumn();
     }
 
+    public function searchLivre($searchTerm) {
+        if (!is_string($searchTerm) || empty(trim($searchTerm))) {
+            return [];
+        }
+        $searchTerm = trim($searchTerm);
+        $searchTerm = htmlspecialchars($searchTerm, ENT_QUOTES, 'UTF-8');
+
+        $sql = "SELECT * FROM livres WHERE titre LIKE :searchTerm OR auteur LIKE :searchTerm LIMIT 20";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':searchTerm' => "%{$searchTerm}%"]);
+        return $stmt->fetchAll();
+    }
+
     
 }

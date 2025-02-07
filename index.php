@@ -12,7 +12,10 @@ else{
     $userId=0;
 }
 
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
+    $livre = new Livre();
+    $searchResults = $livre->searchLivre($_POST['searchTerm']);
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['livreId'], $_POST['userId'], $_POST['action'])) {
         $livreId = (int)$_POST['livreId'];
@@ -20,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = $_POST['action'];
 
         $livre = new Livre();
-
+       
         if ($action === 'add') {
             $result = $livre->ajoutAuxFavoris($livreId, $userId);
         } elseif ($action === 'remove') {
@@ -35,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 
 ?>
 
@@ -63,6 +67,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 <h1>Bienvenue <?php echo isset($_SESSION['nom']) ? htmlspecialchars($_SESSION['nom']) : ''; ?></h1>
+<h1>Rechercher un Livre</h1>
+    <form method="POST">
+        <input type="text" name="searchTerm" placeholder="Titre ou Auteur" required>
+        <button type="submit" name="search">Rechercher</button>
+    </form>
+    
+    <?php if (!empty($searchResults)): ?>
+        <h2>Résultats de la recherche :</h2>
+        <ul>
+            <?php foreach ($searchResults as $livre): ?>
+                <li><?= htmlspecialchars($livre['titre']) ?> - <?= htmlspecialchars($livre['auteur']) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <br>
     <?php
     $livre = new Livre();  
     $livres = $livre->getAllLivres(); 
