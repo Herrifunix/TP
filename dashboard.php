@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     
     if (isset($_POST['titre'], $_POST['action']) && $_POST['action'] === 'remove' && isset($_POST['titre'])) {
-        $livre->supprimerMonLivre($_POST['titre']);
+        $livre->supprimerMonLivre($_POST['titre'], $userId);
     }
 
     

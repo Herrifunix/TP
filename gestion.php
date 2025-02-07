@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer'])) {
     $titre = trim($_POST['titre_suppression']);
 
     if (!empty($titre)) {
-        if ($livre->supprimerMonLivre($titre)) {
+        if ($livre->supprimerMonLivre($titre, $userId)) {
             $message = "✅ Livre supprimé avec succès !";
         } else {
             $message = "❌ Erreur lors de la suppression du livre.";
